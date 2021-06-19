@@ -20,8 +20,9 @@ def start(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-    # text = ''
+    # mes = message.text.lower()
     _, date, task = message.text.split(maxsplit=2)
+    date = date.lower()
     if date not in tasks:
         tasks[date] = []
     tasks[date].append(task)
@@ -32,16 +33,18 @@ def add(message):
 @bot.message_handler(commands=['show'])
 def show(message):
     text = ''
+    # mes = message.text.lower()
     try:
         date = message.text.split()[1]
+        date.lower()
     except IndexError:
         text = 'Введи дату'
+
+    if date in tasks:
+        for task in tasks[date]:
+            text += f'[ ] {task}\n'
     else:
-        if date in tasks:
-            for task in tasks[date]:
-                text += f'[ ] {task}\n'
-        else:
-            text = f'Задач на {date} нет'
+        text = f'Задач на {date} нет'
     bot.reply_to(message, text)
 
 
