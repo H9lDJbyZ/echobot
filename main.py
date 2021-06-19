@@ -6,7 +6,8 @@ import requests
 HELP = '''
 /help - напечатать список команд
 /add дата задача - добавить задачу в список
-/show дата - напечатать все добавленные задачи.
+/show дата - напечатать все добавленные задачи
+/weather город - погода в городе
 '''
 
 bot = telebot.TeleBot(TOKEN)
@@ -52,11 +53,15 @@ def show(message):
 
 @bot.message_handler(commands=['weather'])
 def weather(message):
-    city = message.text
-    params = {'M': '', 'format': '2', 'lang': 'ru'}
-    url = f'https://wttr.in/{city}'
-    response = requests.get(url, params)
-    reply = response.text
+    try:
+        city = message.text.split()[1]
+    except IndexError:
+        reply = 'Введи город'
+    else:
+        params = {'M': '', 'format': '2', 'lang': 'ru'}
+        url = f'https://wttr.in/{city}'
+        response = requests.get(url, params)
+        reply = response.text
     bot.reply_to(message, reply)
 
 
