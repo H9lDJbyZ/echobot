@@ -32,12 +32,16 @@ def add(message):
 @bot.message_handler(commands=['show'])
 def show(message):
     text = '... show'
-    date = message.text.split()[1]
-    if date in tasks:
-        for task in tasks[date]:
-            text += f'[ ] {task}\n'
+    try:
+        date = message.text.split()[1]
+    except IndexError:
+        text = 'Введи дату'
     else:
-        text = f'Задач на {date} нет'
+        if date in tasks:
+            for task in tasks[date]:
+                text += f'[ ] {task}\n'
+        else:
+            text = f'Задач на {date} нет'
     bot.reply_to(message, text)
 
 
