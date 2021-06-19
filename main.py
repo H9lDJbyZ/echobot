@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import telebot
 from secret import TOKEN
+import requests
 
 HELP = '''
 /help - напечатать список команд
@@ -46,6 +47,16 @@ def show(message):
                 reply += f'[ ] {task}\n'
         else:
             reply = f'Задач на {date} нет'
+    bot.reply_to(message, reply)
+
+
+@bot.message_handler(commands=['weather'])
+def weather(message):
+    city = message.text
+    params = {'M': '', 'format': '2', 'lang': 'ru'}
+    url = f'https://wttr.in/{city}'
+    response = requests.get(url, params)
+    reply = response.text
     bot.reply_to(message, reply)
 
 
