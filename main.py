@@ -22,7 +22,7 @@ def start(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-    ...
+    bot.reply_to(message, '... add')
 #     task = input("Введите задачу: ")
 #     date = input("Введите дату: ")
 #     if not date in tasks:
@@ -33,7 +33,7 @@ def add(message):
 
 @bot.message_handler(commands=['show'])
 def show(message):
-    ...
+    bot.reply_to(message, '... show')
     # print(tasks)
     # date = input("Введите дату: ")
     # if date in tasks:
@@ -53,5 +53,10 @@ def echo_all(message):
     bot.reply_to(message, text)
 
 
-print('bot started')
-bot.polling()
+if __name__ == "__main__":
+    try:
+        print('bot started')
+        bot.polling()
+    except KeyboardInterrupt:
+        print('bot stopped')
+
