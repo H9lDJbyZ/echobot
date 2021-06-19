@@ -33,7 +33,7 @@ def add(message):
 @bot.message_handler(commands=['show'])
 def show(message):
     text = ''
-    # mes = message.text.lower()
+    date = 'сегодня'
     try:
         date = message.text.split()[1]
         date.lower()
