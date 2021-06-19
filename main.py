@@ -34,7 +34,7 @@ def add(message):
 @bot.message_handler(commands=['show'])
 def show(message):
     reply = ''
-    date = 'сегодня'
+    # date = 'сегодня'
     try:
         date = message.text.split()[1]
         date.lower()
@@ -45,24 +45,19 @@ def show(message):
             for task in tasks[date]:
                 reply += f'[ ] {task}\n'
         else:
-            text = f'Задач на {date} нет'
+            reply = f'Задач на {date} нет'
     bot.reply_to(message, reply)
 
 
 @bot.message_handler(content_types=['text'])
 def echo_all(message):
-    # text = ''
-    if '111' in message.text:
-        reply = '999 ' + message.text
-    else:
-        reply = message.text
-    bot.reply_to(message, reply)
+    bot.reply_to(message, message.text)
 
 
 def main():
-    print('bot started')
-    # f = file('tasks.txt', 'r')
+    print(f'bot started')
     # TODO read tasks from file
+    # f = file('tasks.txt', 'r')
     bot.polling(none_stop=True)
 
 
