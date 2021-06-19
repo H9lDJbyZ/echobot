@@ -21,7 +21,7 @@ def start(message):
 @bot.message_handler(commands=['add'])
 def add(message):
     # text = ''
-    date, task = message.text.split(maxsplit=2)
+    _, date, task = message.text.split(maxsplit=2)
     if date not in tasks:
         tasks[date] = []
     tasks[date].append(task)
