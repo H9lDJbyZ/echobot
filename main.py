@@ -26,41 +26,48 @@ def add(message):
     if date not in tasks:
         tasks[date] = []
     tasks[date].append(task)
-    text = f'Задача {task}, добавлена на {date}'
-    bot.reply_to(message, text)
+    reply = f'Задача {task}, добавлена на {date}'
+    # TODO add task to file
+    bot.reply_to(message, reply)
 
 
 @bot.message_handler(commands=['show'])
 def show(message):
-    text = ''
+    reply = ''
     date = 'сегодня'
     try:
         date = message.text.split()[1]
         date.lower()
     except IndexError:
-        text = 'Введи дату'
-
-    if date in tasks:
-        for task in tasks[date]:
-            text += f'[ ] {task}\n'
+        reply = 'Введи дату'
     else:
-        text = f'Задач на {date} нет'
-    bot.reply_to(message, text)
+        if date in tasks:
+            for task in tasks[date]:
+                reply += f'[ ] {task}\n'
+        else:
+            text = f'Задач на {date} нет'
+    bot.reply_to(message, reply)
 
 
 @bot.message_handler(content_types=['text'])
 def echo_all(message):
     # text = ''
     if '111' in message.text:
-        text = '999 ' + message.text
+        reply = '999 ' + message.text
     else:
-        text = message.text
-    bot.reply_to(message, text)
+        reply = message.text
+    bot.reply_to(message, reply)
+
+
+def main():
+    print('bot started')
+    # f = file('tasks.txt', 'r')
+    # TODO read tasks from file
+    bot.polling(none_stop=True)
 
 
 if __name__ == "__main__":
     try:
-        print('bot started')
-        bot.polling()
+        main()
     except KeyboardInterrupt:
         print('bot stopped')
