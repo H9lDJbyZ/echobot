@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import telebot
 from secret import TOKEN
 
@@ -10,9 +11,6 @@ HELP = '''
 bot = telebot.TeleBot(TOKEN)
 
 tasks = {}
-
-# def get_command(message):
-#     ...
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -33,14 +31,14 @@ def add(message):
 
 @bot.message_handler(commands=['show'])
 def show(message):
-    bot.reply_to(message, '... show')
-    # print(tasks)
-    # date = input("Введите дату: ")
-    # if date in tasks:
-    #     for task in tasks[date]:
-    #         print('[ ]', task)
-    # else:
-    #     print(f'Задач на {date} нет')
+    text = '... show'
+    date = message.text.split()[1]
+    if date in tasks:
+        for task in tasks[date]:
+            text += f'[ ] {task}\n'
+    else:
+        text = f'Задач на {date} нет'
+    bot.reply_to(message, text)
 
 
 @bot.message_handler(content_types=['text'])
