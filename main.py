@@ -4,8 +4,8 @@ from secret import TOKEN
 
 HELP = '''
 /help - напечатать список команд
-/add - добавить задачу в список
-/show - напечатать все добавленные задачи.
+/add дата задача - добавить задачу в список
+/show дата - напечатать все добавленные задачи.
 '''
 
 bot = telebot.TeleBot(TOKEN)
@@ -20,18 +20,18 @@ def start(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-    bot.reply_to(message, '... add')
-#     task = input("Введите задачу: ")
-#     date = input("Введите дату: ")
-#     if not date in tasks:
-#         tasks[date] = []
-#     tasks[date].append(task)
-#     print(f"Задача {task} добавлена на дату {date}")
+    # text = ''
+    date, task = message.text.split(maxsplit=2)
+    if date not in tasks:
+        tasks[date] = []
+    tasks[date].append(task)
+    text = f'Задача {task}, добавлена на {date}'
+    bot.reply_to(message, text)
 
 
 @bot.message_handler(commands=['show'])
 def show(message):
-    text = '... show'
+    text = ''
     try:
         date = message.text.split()[1]
     except IndexError:
@@ -47,7 +47,7 @@ def show(message):
 
 @bot.message_handler(content_types=['text'])
 def echo_all(message):
-    text = ''
+    # text = ''
     if '111' in message.text:
         text = '999 ' + message.text
     else:
@@ -61,4 +61,3 @@ if __name__ == "__main__":
         bot.polling()
     except KeyboardInterrupt:
         print('bot stopped')
-
