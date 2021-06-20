@@ -56,9 +56,9 @@ def weather(message):
     try:
         city = message.text.split()[1]
     except IndexError:
-        reply = 'Введи город'
+        reply = 'Введи /weather город'
     else:
-        params = {'M': '', 'format': '2', 'lang': 'ru'}
+        params = {'M': '', 'format': '4', 'lang': 'ru'}
         url = f'https://wttr.in/{city}'
         response = requests.get(url, params)
         reply = response.text
