@@ -61,7 +61,7 @@ def show(message):
     for date in dates:
         date = date.lower()
         if date in tasks:
-            reply = date.upper() + "\n"
+            reply = f"{date.upper()}\n"
             for task in tasks[date]:
                 reply += f"[ ] {task}\n"
         else:
