@@ -22,46 +22,42 @@ def start(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-    # mes = message.text.lower()
-    _, date, task = message.text.split(maxsplit=2)
-    date = date.lower()
-    if date not in tasks:
-        tasks[date] = []
-    tasks[date].append(task)
-    reply = f'Задача {task}, добавлена на {date}'
-    # TODO add task to file
+    reply = 'Что-то пошло не так...'
+    try:
+        _, date, task = message.text.split(maxsplit=2)
+    except ValueError:
+        reply = 'Введи /add дата задача'
+    else:
+        date = date.lower()
+        if date not in tasks:
+            tasks[date] = []
+        tasks[date].append(task)
+        reply = f'Задача {task}, добавлена на {date}'
+    # TODO save task to file
     bot.reply_to(message, reply)
 
 
-@bot.message_handler(commands=['show'])
-# def show(message):
-#     reply = ''
-#     # date = 'сегодня'
-#     try:
-#         date = message.text.split()[1]
-#         date.lower()
-#     except IndexError:
-#         reply = 'Введи /show дата'
-#     else:
-#         if date in tasks:
-#             for task in tasks[date]:
-#                 reply += f'[ ] {task}\n'
-#         else:
-#             reply = f'Задач на {date} нет'
-#     bot.reply_to(message, reply)
+@bot.message_handler(commands=['show', 'print'])
 def show(message):
-    reply = 'Что-то пошло не так'  # инициализируем ответ, на всякий случай
-    split_command = message.text.split()
+    try:
+        split_command = message.text.split()
+    except ValueError:
+        bot.reply_to(message, 'Введи /show дата')
+        return
+
     dates = split_command[1:]
 
     # можно вручную не ковырять, ведь выше мы получили список из списка
-    # dates = dates.lower()  # эта строка выдаёт ошибку AttributeError: 'list' object has no attribute 'lower'
+
+    # dates = dates.lower()  эта строка у меня вообще выдаёт ошибку:
+    # AttributeError: 'list' object has no attribute 'lower', но разбираться я не стал
+
     # dates_new = str(dates).replace("'", "")
     # dates_new = str(dates_new).replace("[", "")
     # dates_new = str(dates_new).replace("]", "")
     # dates_split = dates_new.split()
 
-    # i = 0
+    # i = 0  # как уже сказали в чате это лишнее, цикл  for и так присваивает переменной нужное нам значение
     for date in dates:
         date = date.lower()
         if date in tasks:
@@ -71,9 +67,7 @@ def show(message):
         else:
             reply = f"Задач на {date} нет"  # более информативный вывод
             # i += 1
-        # print(reply)
         bot.reply_to(message, reply)
-    # return reply
 
 
 @bot.message_handler(commands=['weather'])
