@@ -34,21 +34,46 @@ def add(message):
 
 
 @bot.message_handler(commands=['show'])
+# def show(message):
+#     reply = ''
+#     # date = 'сегодня'
+#     try:
+#         date = message.text.split()[1]
+#         date.lower()
+#     except IndexError:
+#         reply = 'Введи /show дата'
+#     else:
+#         if date in tasks:
+#             for task in tasks[date]:
+#                 reply += f'[ ] {task}\n'
+#         else:
+#             reply = f'Задач на {date} нет'
+#     bot.reply_to(message, reply)
 def show(message):
-    reply = ''
-    # date = 'сегодня'
-    try:
-        date = message.text.split()[1]
-        date.lower()
-    except IndexError:
-        reply = 'Введи дату'
-    else:
+    reply = 'Что-то пошло не так'  # инициализируем ответ, на всякий случай
+    split_command = message.text.split()
+    dates = split_command[1:]
+
+    # можно вручную не ковырять, ведь выше мы получили список из списка
+    # dates = dates.lower()  # эта строка выдаёт ошибку AttributeError: 'list' object has no attribute 'lower'
+    # dates_new = str(dates).replace("'", "")
+    # dates_new = str(dates_new).replace("[", "")
+    # dates_new = str(dates_new).replace("]", "")
+    # dates_split = dates_new.split()
+
+    # i = 0
+    for date in dates:
+        date = date.lower()
         if date in tasks:
+            reply = date.upper() + "\n"
             for task in tasks[date]:
-                reply += f'[ ] {task}\n'
+                reply += f"[ ] {task}\n"
         else:
-            reply = f'Задач на {date} нет'
-    bot.reply_to(message, reply)
+            reply = f"Задач на {date} нет"  # более информативный вывод
+            # i += 1
+        # print(reply)
+        bot.reply_to(message, reply)
+    # return reply
 
 
 @bot.message_handler(commands=['weather'])
